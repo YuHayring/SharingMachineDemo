@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="localCacheScope" value="STATEMENT"/>
+    </settings>
+
+
+    <typeAliases>
+        <typeAlias type="cn.hayring.sharingmachine.domain.Admin" alias="Admin"/>
+        <typeAlias type="cn.hayring.sharingmachine.domain.User" alias="User"/>
+        <typeAlias type="cn.hayring.sharingmachine.domain.Machine" alias="Machine"/>
+        <typeAlias type="cn.hayring.sharingmachine.domain.Order" alias="Order"/>
+        <typeAlias type="cn.hayring.sharingmachine.domain.Log" alias="Log"/>
+        <typeAlias type="cn.hayring.sharingmachine.domain.Maintenance" alias="Maintenance"/>
+    </typeAliases>
+</configuration>

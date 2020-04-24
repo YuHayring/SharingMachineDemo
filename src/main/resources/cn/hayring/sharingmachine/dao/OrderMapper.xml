@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hayring.sharingmachine.dao.OrderMapperDao">
+
+    <select id="selectOrderById" parameterType="java.lang.String" resultType="Order">
+        SELECT
+        order_id id,
+        user_id userId,
+        machine_id machineId,
+        order_time time
+        FROM t_order
+        WHERE order_id = #{id}
+    </select>
+
+    <select id="countOrderByParam" resultType="long">
+        SELECT
+        count(*)
+        FROM t_order
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="machineId != null">
+                AND machine_id = #{machineId}
+            </if>
+            <if test="fromTime != null and toTime != null">
+                AND order_time &gt; #{fromTime} and order_time &lt; #{toTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOrderByParam" resultType="Order">
+        SELECT
+        order_id id,
+        user_id userId,
+        machine_id machineId,
+        order_time time
+        FROM t_order
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="machineId != null">
+                AND machine_id = #{machineId}
+            </if>
+            <if test="fromTime != null and toTime != null">
+                AND order_time &gt; #{fromTime} and order_time &lt; #{toTime}
+            </if>
+        </where>
+        LIMIT #{index},#{size}
+    </select>
+
+
+    <select id="countAllOrder" resultType="long">
+        SELECT
+        count(*)
+        FROM t_order
+    </select>
+
+    <select id="selectOrderAll" resultType="Order">
+        SELECT
+        order_id id,
+        user_id userId,
+        machine_id machineId,
+        order_time time
+        FROM t_order
+        LIMIT #{index},#{size}
+    </select>
+
+
+    <insert id="insertOrder" parameterType="Order">
+    INSERT INTO t_order (order_id, user_id, machine_id, order_time)
+    VALUES (#{order.id}, #{order.userId}, #{order.machineId}, #{order.time})
+    </insert>
+
+    <update id="updateOrderByIdSelective" parameterType="Order">
+        UPDATE t_order
+        <set>
+            <if test="order.userId != null">
+                user_id = #{order.userId},
+            </if>
+            <if test="order.machineId != null">
+                machine_id = #{order.machineId},
+            </if>
+            <if test="order.time != null">
+                order_time = #{order.time},
+            </if>
+        </set>
+        WHERE order_id = #{order.id}
+    </update>
+
+    <update id="updateOrderAllById" parameterType="Order">
+        UPDATE t_order SET
+        user_id = #{order.userId},
+        machine_id = #{order.machineId},
+        order_time = #{order.time}
+        WHERE order_id = #{order.id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="java.lang.String">
+        DELETE FROM t_order
+        WHERE order_id = #{id}
+    </delete>
+</mapper>

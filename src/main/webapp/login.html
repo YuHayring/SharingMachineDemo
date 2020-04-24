@@ -1,0 +1,30 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用户登录</title>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+    <script type="text/javascript">
+        targetLocation = 'user';
+    </script>
+</head>
+<body onload="bodyOnLoad()">
+<table border="1px">
+    <tr>
+        <td width="20%">用户名</td>
+        <td width="80%"><input id="id" type="text" name="userId"/></td>
+    </tr>
+    <tr>
+        <td width="20%">密码</td>
+        <td width="80%"><input id="password" type="password" name="password"/></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="submit" onclick="login()" value="登录"/>
+            <input type="reset" value="重置"/>
+            <a href="register.html"><input value="注册"/></a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

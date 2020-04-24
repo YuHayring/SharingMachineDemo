@@ -1,0 +1,38 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>使用记录</title>
+    <script type="text/javascript" src="js/order.js">
+    </script>
+    <script src="../../js/ajax.js"></script>
+</head>
+<body onload="bodyOnLoad()">
+<h1>教学设备使用记录</h1>
+
+<p id="noneLabel" style="color: red" hidden>没有结果</p>
+<p><a href="main.html">首页</a></p>
+
+检索条件<br/>
+设备编号<input type="text" name="machineId" id="machineIdField" onchange="setPageOne()"/>
+时间从：<input type="date" name="fromTime" id="fromTimeField" onchange="setPageOne()"/>
+到：<input type="date" name="toTime" id="toTimeField" onchange="setPageOne()"/>
+<input type="hidden" name="page" id="pageNo"/>
+<input type="hidden" name="count" id="countNo"/>
+<input type="submit" onclick="query()"/>
+
+<button onclick="clearMachineId()">清除设备编号</button>
+<button onclick="clearMachineId()">清除日期</button>
+<button onclick="clearAll()">清除全部</button>
+<button id="prevPageButton" onclick="prevPage()">上一页</button>
+<button id="nextPageButton" onclick="nextPage()">下一页</button>
+页码：<p id="page"></p>
+<table id="orders" border="2" style="table-layout:fixed">
+    <tr id="header">
+        <td>记录编号</td>
+        <td>机器编号</td>
+        <td>时间</td>
+    </tr>
+</table>
+<br/>
+</body>
+</html>

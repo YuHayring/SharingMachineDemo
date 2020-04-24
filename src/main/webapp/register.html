@@ -1,0 +1,39 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用户注册</title>
+    <script type="text/javascript" src="js/register.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+</head>
+<body onload="bodyOnLoad()">
+用户注册信息：
+<table border="1px" width="60%">
+    <tr>
+        <td width="20%">昵称</td>
+        <td width="80%">
+            <input type="text" id="userName"/>
+        </td>
+    </tr>
+    <tr>
+        <td width="20%">登录名</td>
+        <td width="80%">
+            <input type="text" name="userId" id="id"/>
+        </td>
+    </tr>
+    <tr>
+        <td width="20%">密码</td>
+        <td width="80%"><input id="password" type="password" name="password"/></td>
+    </tr>
+    <tr>
+        <td width="20%">密码确认</td>
+        <td width="80%"><input id="p1" type="password" name="again"></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="submit" value="注册" onclick="register()">
+            <input type="reset" value="重置" onclick="clear()">
+        </td>
+    </tr>
+</table>
+</body>
+</html>

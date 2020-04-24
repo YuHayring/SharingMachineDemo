@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+    <context:component-scan base-package="cn.hayring.sharingmachine.service"/>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED" read-only="true" rollback-for="java.lang.Exception"/>
+            <tx:method name="register" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="update*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="change*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="add*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="run*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="stop*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="login" propagation="REQUIRED" read-only="false"/>
+
+            <!-- setter 跟数据库无关 -->
+            <tx:method name="set*" propagation="NOT_SUPPORTED"/>
+            <tx:method name="get*" propagation="NOT_SUPPORTED"/>
+
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="services" expression="execution(* cn.hayring.sharingmachine.service.*Service.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>
+    </aop:config>
+
+
+    <bean id="sessionMap" class="cn.hayring.sharingmachine.web.MachineManager" factory-method="getIdMap"
+          lazy-init="false"/>
+
+
+    <bean id="multiTypeGson" class="cn.hayring.util.MyMultiTypeGsonFactory" factory-method="getMyMultiTypeGson"/>
+
+
+    <!--    <bean userId="annotationPropertyConfigurerRedis"-->
+    <!--          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+    <!--        <property name="order" value="1" />-->
+    <!--        <property name="ignoreUnresolvablePlaceholders" value="true" />-->
+    <!--        <property name="locations">-->
+    <!--            <list>-->
+    <!--                <value>classpath:redis.properties</value>-->
+    <!--            </list>-->
+    <!--        </property>-->
+    <!--    </bean>-->
+
+
+    <!--    <cache:annotation-driven cache-manager="cacheManager"/>-->
+    <!-- redis连接池 -->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+    </bean>
+
+
+    <!-- 连接工厂 -->
+    <bean id="JedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:host-name="${redis.host}" p:port="${redis.port}" p:password="${redis.pass}" p:pool-config-ref="poolConfig"/>
+    <!-- redis模板 -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory" ref="JedisConnectionFactory"/>
+    </bean>
+
+    <!--    <bean userId="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">-->
+    <!--        <property name="caches">-->
+    <!--            <set>-->
+    <!--                &lt;!&ndash; 这里可以配置多个redis &ndash;&gt;-->
+    <!--                <bean class="cn.hayring.sharingmachine.utils.RedisCache">-->
+    <!--                    <property name="redisTemplate" ref="redisTemplate" />-->
+    <!--                    <property name="name" value="redis"/>-->
+    <!--                    &lt;!&ndash; name对应的名称要在类或方法的注解中使用 &ndash;&gt;-->
+    <!--                </bean>-->
+    <!--            </set>-->
+    <!--        </property>-->
+    <!--    </bean>-->
+
+</beans>

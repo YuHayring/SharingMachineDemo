@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hayring.sharingmachine.dao.UserMapperDao">
+    <!--    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>-->
+
+
+    <!-- 手动映射 -->
+    <!--resultMap id="BaseResultMap" type="cn.hayring.sharingmachine.domain.User">
+        <id column="user_id" jdbcType="VARCHAR" property="id" />
+        <result column="user_password" jdbcType="VARCHAR" property="password" />
+        <result column="user_name" jdbcType="VARCHAR" property="name" />
+    </resultMap-->
+
+
+    <!-- 全部检索语句块 -->
+    <sql id="all">
+    user_id, user_password, user_name
+    </sql>
+
+    <select id="selectUserById" parameterType="java.lang.String" resultType="User" useCache="false">
+        SELECT
+        user_id id,
+        user_name name,
+        user_password password
+        FROM t_user
+        WHERE user_id = #{id}
+    </select>
+
+    <select id="selectUserByIdWithoutSec" parameterType="java.lang.String" resultType="User">
+        SELECT
+        user_id id,
+        user_name name
+        FROM t_user
+        WHERE user_id = #{id}
+    </select>
+
+    <insert id="insertUser" parameterType="User">
+    INSERT INTO t_user (user_id, user_name, user_password)
+    VALUES (#{user.id}, #{user.name}, #{user.password})
+  </insert>
+
+    <update id="updateUserByIdSelective" parameterType="User">
+        UPDATE t_user
+        <set>
+            <if test="password != null">
+                user_password = #{password,jdbcType=BINARY},
+            </if>
+            <if test="name != null">
+                user_name = #{name,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE user_id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateUserId">
+        UPDATE t_user SET
+        user_id = #{newId,jdbcType=VARCHAR}
+        WHERE user_id = #{user.id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateUserById" parameterType="User">
+        UPDATE t_user SET
+        user_password = #{user.password,jdbcType=VARCHAR},
+        user_name = #{user.name,jdbcType=VARCHAR}
+        WHERE user_id = #{user.id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteUserById" parameterType="java.lang.String">
+        DELETE FROM t_user
+        WHERE user_id = #{id}
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hayring.sharingmachine.dao.AdminMapperDao">
+    <!--    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>-->
+
+
+    <!-- 手动映射 -->
+    <!--resultMap id="BaseResultMap" type="cn.hayring.sharingmachine.domain.Admin">
+        <id column="admin_id" jdbcType="VARCHAR" property="id" />
+        <result column="admin_password" jdbcType="VARCHAR" property="password" />
+        <result column="admin_name" jdbcType="VARCHAR" property="name" />
+    </resultMap-->
+
+
+    <!-- 全部检索语句块 -->
+    <sql id="all">
+    admin_id, admin_password, admin_name
+    </sql>
+
+    <select id="selectAdminById" parameterType="java.lang.String" resultType="Admin" useCache="false">
+        SELECT
+        admin_id id,
+        admin_name name,
+        admin_password password
+        FROM t_admin
+        WHERE admin_id = #{id}
+    </select>
+
+    <select id="selectAdminByIdWithoutSec" parameterType="java.lang.String" resultType="Admin">
+        SELECT
+        admin_id id,
+        admin_name name
+        FROM t_admin
+        WHERE admin_id = #{id}
+    </select>
+
+    <insert id="insertAdmin" parameterType="Admin">
+    INSERT INTO t_admin (admin_id, admin_name, admin_password)
+    VALUES (#{admin.id}, #{admin.name}, #{admin.password})
+  </insert>
+
+    <update id="updateAdminByIdSelective" parameterType="Admin">
+        UPDATE t_admin
+        <set>
+            <if test="password != null">
+                admin_password = #{password,jdbcType=BINARY},
+            </if>
+            <if test="name != null">
+                admin_name = #{name,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE admin_id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateAdminId">
+        UPDATE t_admin SET
+        admin_id = #{newId,jdbcType=VARCHAR}
+        WHERE admin_id = #{admin.id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteAdminById" parameterType="java.lang.String">
+        DELETE FROM t_admin
+        WHERE admin_id = #{id}
+    </delete>
+
+
+</mapper>

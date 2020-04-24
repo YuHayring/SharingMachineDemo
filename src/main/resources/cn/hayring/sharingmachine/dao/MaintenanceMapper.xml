@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hayring.sharingmachine.dao.MaintenanceMapperDao">
+
+    <select id="selectMaintenanceById" parameterType="java.lang.String" resultType="Maintenance">
+        SELECT
+        maintenance_id id,
+        admin_id adminId,
+        machine_id machineId,
+        maintenance_time time
+        FROM t_maintenance
+        WHERE maintenance_id = #{id}
+    </select>
+
+    <select id="selectMaintenanceByParam" resultType="Maintenance">
+        SELECT
+        maintenance_id id,
+        admin_id adminId,
+        machine_id machineId,
+        m_time time
+        FROM t_maintenance
+        <where>
+            <if test="adminId!=null">
+                admin_id = #{adminId}
+            </if>
+            <if test="machineId!= null">
+                AND machine_id = #{machineId}
+            </if>
+            <if test="fromTime != null and toTime != null">
+                AND m_time &gt; #{fromTime} and m_time &lt; #{toTime}
+            </if>
+        </where>
+        LIMIT #{index},#{size}
+    </select>
+
+    <select id="countMaintenanceByParam" resultType="long">
+        SELECT
+        count(*)
+        FROM t_maintenance
+        <where>
+            <if test="adminId!=null">
+                admin_id = #{adminId}
+            </if>
+            <if test="machineId!= null">
+                AND machine_id = #{machineId}
+            </if>
+            <if test="fromTime != null and toTime != null">
+                AND m_time &gt; #{fromTime} and m_time &lt; #{toTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="countAllMaintenance" resultType="long">
+        SELECT
+        count(*)
+        FROM t_maintenance
+    </select>
+
+    <select id="selectMaintenanceAll" resultType="Maintenance">
+        SELECT
+        maintenance_id id,
+        admin_id adminId,
+        machine_id machineId,
+        maintenance_time time
+        FROM t_maintenance
+        LIMIT #{index},#{size}
+    </select>
+
+
+    <insert id="insertMaintenance" parameterType="Maintenance">
+    INSERT INTO t_maintenance (maintenance_id, admin_id, machine_id, maintenance_time)
+    VALUES (#{maintenance.id}, #{maintenance.adminId}, #{maintenance.machineId}, #{maintenance.time})
+    </insert>
+
+
+    <delete id="deleteMaintenanceById" parameterType="java.lang.String">
+        DELETE FROM t_maintenance
+        WHERE maintenance_id = #{id}
+    </delete>
+</mapper>

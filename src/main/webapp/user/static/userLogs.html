@@ -1,0 +1,24 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>登录记录</title>
+    <script src="js/log.js"></script>
+    <script src="../../js/ajax.js"></script>
+</head>
+<body onload="bodyOnLoad()">
+<h1>登录记录</h1>
+<p><a href="main.html">首页</a></p>
+
+<p id="noneLabel" style="color: red" hidden>没有结果</p>
+<button id="prevPageButton" onclick="prevPage()" hidden>上一页</button>
+<button id="nextPageButton" onclick="nextPage()">下一页</button>
+页码：<p id="page"></p>
+<table id="logs" border="2" style="table-layout:fixed">
+    <tr id="header">
+        <td>时间</td>
+    </tr>
+</table>
+<br/>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>管理员登录</title>
+    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+    <script type="text/javascript">
+        targetLocation = 'admin';
+    </script>
+</head>
+<body onload="bodyOnLoad()">
+<h1>教学设备管理系统</h1>
+<table border="1px">
+    <tr>
+        <td width="20%">用户名</td>
+        <td width="80%"><input type="text" name="adminId" id="id"/></td>
+    </tr>
+    <tr>
+        <td width="20%">密码</td>
+        <td width="80%"><input type="password" name="password" id="password"/></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="submit" onclick="login()" value="登录"/>
+            <input onclick="clear()" value="重置"/>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

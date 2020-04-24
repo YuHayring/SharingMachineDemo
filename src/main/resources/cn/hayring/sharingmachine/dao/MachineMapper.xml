@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hayring.sharingmachine.dao.MachineMapperDao">
+
+    <!--    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>-->
+
+    <select id="selectMachineById" parameterType="java.lang.Integer" resultType="Machine">
+        SELECT
+        machine_id id,
+        machine_address address,
+        machine_status status,
+        machine_longitude longitude,
+        machine_latitude latitude
+        FROM t_machine
+        WHERE machine_id = #{id}
+    </select>
+
+    <select id="selectMachineByParam" resultType="Machine">
+        SELECT
+        machine_id id,
+        machine_address address,
+        machine_status status,
+        machine_longitude longitude,
+        machine_latitude latitude
+        FROM t_machine
+        <where>
+            <if test="status != null">
+                machine_status = #{status}
+            </if>
+        </where>
+        LIMIT #{index},#{size}
+    </select>
+
+    <select id="countMachineByParam" resultType="long">
+        SELECT
+        count(*)
+        FROM t_machine
+        <where>
+            <if test="status != null">
+                machine_status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertMachine" parameterType="Machine" useGeneratedKeys="true" keyProperty="machine.id">
+    INSERT INTO t_machine (machine_address, machine_status, machine_longitude, machine_latitude)
+    VALUES (#{machine.address}, #{machine.status}, #{machine.longitude}, #{machine.latitude})
+    </insert>
+
+    <update id="updateMachineByIdSelective" parameterType="Machine">
+        UPDATE t_machine
+        <set>
+            <if test="machine.address != null">
+                machine_address = #{machine.address},
+            </if>
+            <if test="machine.status != null">
+                machine_status = #{machine.status},
+            </if>
+            <if test="machine.longitude != null">
+                machine_longitude = #{machine.longitude},
+            </if>
+            <if test="machine.latitude != null">
+                machine_latitude = #{machine.latitude},
+            </if>
+        </set>
+        WHERE machine_id = #{machine.id}
+    </update>
+
+
+    <update id="updateMachineAllById" parameterType="Machine">
+        UPDATE t_machine SET
+        machine_address = #{machine.address},
+        machine_status = #{machine.status},
+        machine_longitude = #{machine.longitude},
+        machine_latitude = #{machine.latitude}
+        WHERE machine_id = #{machine.id}
+    </update>
+
+    <update id="updateAllMachineStatus" parameterType="int">
+        UPDATE t_machine SET
+        machine_status = #{status}
+    </update>
+
+    <update id="updateMachineStatus">
+        UPDATE t_machine
+        WHERE machine_id = #{machineId}
+        SET
+        machine_status = #{status}
+    </update>
+
+    <delete id="deleteMachineById" parameterType="java.lang.Integer">
+        DELETE FROM t_machine
+        WHERE machine_id = #{id}
+    </delete>
+</mapper>

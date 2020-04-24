@@ -1,0 +1,56 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>设备管理</title>
+</head>
+
+<script src="js/machine.js"></script>
+<script src="../../js/ajax.js"></script>
+<body onload="bodyOnLoad()">
+<h1>教学设备管理</h1>
+<h2 id="userNameLabel">管理员：</h2>
+<p><a href="main.html">首页</a></p>
+<div id="form">
+    检索条件<br/>
+    关机<input type="radio" name="status" value="-1" onclick="setPageOne()"/>
+    等待<input type="radio" name="status" value="0" onclick="setPageOne()"/>
+    运行中<input type="radio" name="status" value="1" onclick="setPageOne()"/>
+    所有<input type="radio" name="status" value="" checked onclick="setPageOne()"/> <br/>
+    <input type="submit" onclick="query()"/>
+</div>
+<div>
+    <p id="page">页码：</p>
+    <button id="prevPageButton" onclick="prevPage()">上一页</button>
+    <button id="nextPageButton" onclick="nextPage()">下一页</button>
+    <p id="noneLabel" style="color: red" hidden>没有结果</p>
+    <table id="machines" border="2" style="table-layout:fixed">
+        <tr>
+            <td>设备id</td>
+            <td>地址</td>
+            <td>状态</td>
+            <td>经度</td>
+            <td>纬度</td>
+            <td><input id="newMachineRadio" name="id" type="radio" onclick="newMachine()"/></td>
+        </tr>
+
+    </table>
+    <br/>
+</div>
+<br/>
+
+
+<div id="info_edit">
+    地址<input type="text" id="addressField"/>
+
+    经度<input type="number" max="180" min="-180" step="0.000001" id="longitudeField"/>
+
+    纬度<input type="number" max="180" min="-180" step="0.000001" id="latitudeField"/>
+
+    <input type="submit" value="更新" id="putButton" hidden onclick="put()"/>
+    <input type="submit" value="添加" id="postButton" hidden onclick="post()"/>
+    <input type="submit" value="删除" id="deleteButton" hidden onclick="del()"/>
+</div>
+
+
+</body>
+</html>
